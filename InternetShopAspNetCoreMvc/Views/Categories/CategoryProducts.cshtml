@@ -1,0 +1,49 @@
+﻿@model InternetShopAspNetCoreMvc.Models.Category
+
+<h1>@Model.Name</h1>
+<h2>@Model.Description</h2>
+<br />
+
+<div class="d-flex justify-content-around flex-wrap align-content-around">
+    @foreach (var product in Model.Products)
+    {
+        var imageUrl = product.Image.StartsWith("/")
+        ? product.Image
+        : Url.Content($"~/images/Products/{product.Image}");
+
+        <div class="card mb-4" style="width: 300px;">
+            <img class="card-img-top"
+                 src="@imageUrl"
+                 alt="@product.Name" />
+
+            <div class="card-body">
+                <h4 class="card-title">@product.Name</h4>
+                <h5 class="card-subtitle mb-2 text-muted">
+                    @product.Price.ToString("N0") ₴
+                </h5>
+                <p class="card-text">@product.Description</p>
+
+                <form asp-action="AddToCart" asp-controller="Cart" method="post">
+                    <input type="hidden" name="ProductId" value="@product.Id" />
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="Quantity">Quantity</label>
+                        <input type="number"
+                               id="Quantity"
+                               name="Quantity"
+                               value="1"
+                               class="form-control" />
+                        <button type="submit"
+                                class="btn btn-outline-secondary">
+                            Add To Cart
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+</div>
+
+@if (!Model.Products.Any())
+{
+    <h3>No Products Available in this Category</h3>
+}
