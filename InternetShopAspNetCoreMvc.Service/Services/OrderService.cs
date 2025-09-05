@@ -37,8 +37,6 @@ public class OrderService : IOrderService
                     Amount = totalWithNoTax
                 };
                 var newOrderId = await _orderRepository.CreateOrderAsync(order);
-                //_context.Orders.Add(order);
-                //await _context.SaveChangesAsync();
 
                 foreach (var item in cartItems)
                 {
